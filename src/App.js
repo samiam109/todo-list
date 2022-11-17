@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import ErrorProvider from './common/ErrorProvider';
+import ErrorNotification from './common/ErrorNotification';
+import TodoForm from './components/TodoForm'
+import TodoList from './components/TodoList'
 import './App.css';
 
 function App() {
+  const [todoList, setTodoList] = useState([])
+
+  const addTodo = (todo) => {
+    setTodoList((currentList) =>
+      [...currentList, {
+        id: currentList.length + 1,
+        value: todo
+      }]
+    )
+  }
+
+  console.log('render')
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ErrorProvider>
+        <TodoForm addTodo={addTodo} />
+        <TodoList list={todoList} />
+        <ErrorNotification />
+      </ErrorProvider>
     </div>
   );
 }
