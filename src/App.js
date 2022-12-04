@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ErrorProvider from './common/ErrorProvider';
 import ErrorNotification from './common/ErrorNotification';
-import TodoForm from './components/TodoForm'
-import TodoList from './components/TodoList'
-import './App.css';
+import TodoForm from './components/todo/TodoForm'
+import TodoList from './components/todo/TodoList'
+import './app.css';
 
 function App() {
-  const [todoList, setTodoList] = useState([])
 
-  const addTodo = (todo) => {
-    setTodoList((currentList) =>
-      [...currentList, {
-        id: currentList.length + 1,
-        value: todo
-      }]
-    )
-  }
+  // const addTodo = (todo) => {
+  //   setTodoList((currentList) =>
+  //     [...currentList, {
+  //       id: currentList.length + 1
+  //       value: todo
+  //     }]
+  //   )
+  // }
 
   console.log('render')
 
   return (
-    <div className="App">
+    <div className="app">
       <ErrorProvider>
-        <TodoForm addTodo={addTodo} />
-        <TodoList list={todoList} />
+        <div className='todo-content'>
+          <TodoForm />
+          <TodoList />
+        </div>
         <ErrorNotification />
       </ErrorProvider>
     </div>
