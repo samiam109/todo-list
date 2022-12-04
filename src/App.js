@@ -7,17 +7,6 @@ import './app.css';
 
 function App() {
 
-  // const addTodo = (todo) => {
-  //   setTodoList((currentList) =>
-  //     [...currentList, {
-  //       id: currentList.length + 1
-  //       value: todo
-  //     }]
-  //   )
-  // }
-
-  console.log('render')
-
   return (
     <div className="app">
       <ErrorProvider>
