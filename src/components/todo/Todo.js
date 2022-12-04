@@ -1,14 +1,25 @@
-import React, { useState } from 'react'
-import { complete, remove } from '../../redux/todoSlice'
-import { useDispatch } from 'react-redux'
+import React, { useState, useMemo } from 'react'
+import { update, remove } from '../../redux/todoSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
-export default function Todo(todo) {
-  const [isComplete, setIsComplete] = useState(false)
+export default function Todo({ id }) {
+  const selectTodoById = (state, todoId) => {
+    return state.todoList.todos.find(todo => todo.id === todoId)
+  }
+  const todo = useSelector(state => selectTodoById(state, id))
+  const { value, isComplete } = todo;
+  const [completeTodo, setCompleteTodo] = useState(isComplete)
+  const todoMemo = useMemo(() => {
+    return {
+      ...todo,
+      isComplete: completeTodo
+    }
+  }, [completeTodo])
   const dispatch = useDispatch();
 
   const updateComplete = () => {
-    setIsComplete(() => {
-      dispatch(complete(todo))
+    setCompleteTodo(() => {
+      dispatch(update(todoMemo))
       return true
     })
   }
@@ -18,13 +29,14 @@ export default function Todo(todo) {
     setTimeout(() => {
       dispatch(remove(todo))
     }, 1000)
+
   }
   return (
     <div>
-      <li className={`todo-item${isComplete ? '-complete' : ''}`}>
-        {todo.value}
+      <li className={`todo-item${completeTodo ? '-complete' : ''}`}>
+        {value}
       </li>
-      {!isComplete ? <button className='btn' onClick={handleComplete}>Complete</button> : null}
+      {!completeTodo ? <button className='btn' onClick={handleComplete}>Complete</button> : null}
     </div>
   )
 }

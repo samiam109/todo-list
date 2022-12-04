@@ -14,10 +14,10 @@ const todoListSlice = createSlice({
         complete: false
       }]
     },
-    complete: (state, action) => {
+    update: (state, action) => {
       state.todos = state.todos.map(todo => {
-        if (todo.id === action.payload) {
-          return { ...todo, complete: true }
+        if (todo.id === action.payload.id) {
+          return { ...action.payload }
         }
         else {
           return { ...todo }
@@ -31,5 +31,5 @@ const todoListSlice = createSlice({
   }
 })
 
-export const { add, remove, complete } = todoListSlice.actions;
+export const { add, remove, update } = todoListSlice.actions;
 export default todoListSlice.reducer
