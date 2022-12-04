@@ -4,16 +4,18 @@ import Todo from './Todo'
 
 
 export default function TodoList() {
-
-  const list = useSelector((state) => state.todoList.todos)
+  const selectTodoIds = state => {
+    return state.todoList.todos.map(todo => todo.id)
+  }
+  const todoIds = useSelector(selectTodoIds)
 
   return (
     <>
-      {list && list.length > 0 ?
+      {todoIds && todoIds.length > 0 ?
         (
           <ul className='list' data-testid="todolist">
-            {list.map(todo => {
-              return <Todo key={todo.id + todo.value} {...todo} />
+            {todoIds.map(id => {
+              return <Todo key={id} id={id} />
             })}
           </ul>
         ) : (
