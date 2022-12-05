@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TodoForm from './todo/TodoForm';
 
@@ -14,8 +14,8 @@ test('todo input should be empty', () => {
 })
 test('todo submit is in document', () => {
   renderWithRedux(<TodoForm />);
-  const todoInput = screen.getByText(/submit/i);
-  expect(todoInput).toBeInTheDocument()
+  const submitTodo = screen.getByText(/submit/i);
+  expect(submitTodo).toBeInTheDocument()
 })
 test('can enter a todo into the todo input', () => {
   renderWithRedux(<TodoForm />);
@@ -23,6 +23,24 @@ test('can enter a todo into the todo input', () => {
   const todoInput = screen.getByPlaceholderText(/enter todo/i);
   todoInput.value = todo
   expect(todoInput.value).toEqual(todo)
+})
+test('todo submit is disabled if todo is empty', () => {
+  renderWithRedux(<TodoForm />);
+  const todoInput = screen.getByPlaceholderText(/enter todo/i);
+  const submitTodo = screen.getByText(/submit/i);
+  expect(todoInput.value).toEqual('')
+  expect(submitTodo).toBeDisabled()
+})
+test('submit is not disabled if there is a todo', async () => {
+  renderWithRedux(<TodoForm />);
+  const todo = 'Wash my car';
+  const todoInput = screen.getByPlaceholderText(/enter todo/i);
+  todoInput.value = todo
+  const submitTodo = screen.getByText(/submit/i);
+  expect(todoInput.value).toEqual(todo)
+  setTimeout(() => {
+    expect(submitTodo).not.toBeDisabled()
+  }, 200)
 })
 //clean up test with waitFor
 test('todo input is cleared after submit', () => {
